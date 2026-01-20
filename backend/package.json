@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-config && npm run prepare-dist",
+    "copy-config": "powershell -Command \"Copy-Item -Force host.json dist/; Copy-Item -Force package*.json dist/\"",
+    "prepare-dist": "powershell -Command \"if (Test-Path dist\\test) { Remove-Item -Recurse -Force dist\\test }; Push-Location dist; npm ci --omit=dev; Pop-Location\"",
     "watch": "tsc -w",
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
@@ -24,5 +26,5 @@
     "ts-jest": "^29.4.5",
     "typescript": "^4.0.0"
   },
-  "main": "dist/src/functions/v3.js"
+  "main": "src/index.js"
 }
